@@ -111,8 +111,9 @@ export default function App({ $target }) {
   };
 
   const $input = document.createElement("input");
+  $input.style.display = "block";
+  $input.placeholder = "입력 후 엔터를 눌러주세요!";
   $target.appendChild($input);
-
   $input.addEventListener("keyup", async (e) => {
     if (e.key === "Enter") {
       const inputText = $input.value;
@@ -149,5 +150,6 @@ export default function App({ $target }) {
 // 또한 모든 브라우저는 지원하지 않지만
 // window.requestIdleCallback() 이라는 것도 있다.
 // UI가 바쁘지 않을 때 정해진 함수들을 실행하는 것
-
 // 아니면 웹 워커라는 것도 사용가능함
+
+//최적화에 대한 고민을 많이 해보자
