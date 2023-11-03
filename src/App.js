@@ -93,6 +93,39 @@ export default function App({ $target }) {
   $target.appendChild($button);
 
   $button.addEventListener("click", async () => SyncTasks.run());
+
+  const handleOnRemove = async (todoId) => {
+    const nextTodos = [...this.state.todos];
+    const todoIndex = nextTodos.findIndex((todo) => todo._id === todoId);
+    nextTodos.splice(todoIndex, 1);
+
+    this.setState({
+      ...this.state,
+      todos: nextTodos,
+    });
+    SyncTasks.removeTasks(`/${todoId}`);
+    SyncTasks.addTask({
+      url: `/${todoId}`,
+      method: "DELETE",
+    });
+  };
+
+  const $input = document.createElement("input");
+  $target.appendChild($input);
+
+  $input.addEventListener("keyup", async (e) => {
+    if (e.key === "Enter") {
+      const inputText = $input.value;
+
+      await request("", {
+        method: "POST",
+        body: JSON.stringify({
+          content: inputText,
+        }),
+      });
+      $input.value = "";
+    }
+  });
 }
 
 //만약 onDrop이 호출될 때마다 API호출로 데이터를 바꾸고
