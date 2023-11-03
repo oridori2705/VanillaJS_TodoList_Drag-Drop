@@ -1,8 +1,13 @@
+import { request } from "./api.js";
 export default function SyncTaskManager() {
-  const tasks = [];
+  let tasks = [];
 
   this.addTask = (task) => {
     tasks.push(task);
+  };
+
+  this.removeTasks = (urlPatter) => {
+    tasks = tasks.filter((task) => !task.url.includes(urlPatter));
   };
 
   this.run = async () => {
@@ -12,6 +17,7 @@ export default function SyncTaskManager() {
       await request(task.url, {
         method: task.method || "GET",
       });
+      this.run();
     }
   };
 }

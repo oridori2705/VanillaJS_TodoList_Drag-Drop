@@ -31,8 +31,11 @@ export default function App({ $target }) {
       title: "완료되지않은 일",
       todos: [],
     },
-    onDrop: async (todoId) => {
+    onDrop: (todoId) => {
       handlerOnDrop(todoId, false);
+    },
+    onRemove: (todoId) => {
+      handleOnRemove(todoId);
     },
   });
 
@@ -44,6 +47,10 @@ export default function App({ $target }) {
     },
     onDrop: async (todoId) => {
       handlerOnDrop(todoId, true);
+    },
+    onRemove: (todoId) => {
+      handleOnRemove;
+      todoId;
     },
   });
 

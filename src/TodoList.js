@@ -1,4 +1,4 @@
-export default function TodoList({ $target, initialState, onDrop }) {
+export default function TodoList({ $target, initialState, onDrop, onRemove }) {
   const $todoList = document.createElement("div");
 
   $todoList.setAttribute("draggable", "true");
@@ -19,7 +19,10 @@ export default function TodoList({ $target, initialState, onDrop }) {
                 ${todos
                   .map(
                     (todo) =>
-                      `<li data-id="${todo._id}" draggable="true" >${todo.content}</li>`
+                      `<li data-id="${todo._id}" draggable="true" >
+                          ${todo.content}
+                            <button>x</button>
+                          </li>`
                   )
                   .join("")}
             </ul>
@@ -40,7 +43,6 @@ export default function TodoList({ $target, initialState, onDrop }) {
   // <>마다 있는 data-id를 이용해 작업한다.
   $todoList.addEventListener("dragstart", (e) => {
     const $li = e.target.closest("li");
-
     e.dataTransfer.setData("todoId", $li.dataset.id);
   });
 
@@ -48,6 +50,7 @@ export default function TodoList({ $target, initialState, onDrop }) {
   //drop : e.preventDefault()를  꼭 해줘야한다고 MDN에 나옴
   $todoList.addEventListener("dragover", (e) => {
     e.preventDefault();
+
     e.dataTransfer.dropEffect = "move"; //copy : 복사 , move: 복사 x 이동만, link 3가지 타입이 있음
   });
 
@@ -59,6 +62,15 @@ export default function TodoList({ $target, initialState, onDrop }) {
     const { todos } = this.state;
     if (!todos.find((todo) => todo._id === droppedTodoId)) {
       onDrop(droppedTodoId);
+    }
+  });
+  $todoList.addEventListener("click", (e) => {
+    if (e.target.tagName === "BUTTON") {
+      const $li = e.target.closest("li");
+
+      if ($li) {
+        onRemove($li.dataset.id);
+      }
     }
   });
 }

@@ -3,6 +3,7 @@ export default function TaskQueue() {
   //queue에 API 요청 함수를 쌓는다.
   this.addTask = (task) => {
     tasks.push(task);
+    console.log(tasks);
   };
 
   this.run = async () => {
